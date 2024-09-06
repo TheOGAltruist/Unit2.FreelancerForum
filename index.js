@@ -35,35 +35,49 @@ const fieldNames = ["Name", "Occupation", "Starting Price"]
 // Function to add freelancers to display at regular intervals
 const addFreelancerIntervalId = setInterval(addFreelancer, 2000);
 
+function averageStartingPrice() {
+    const averageStartingPrice = initialFreelancers.reduce((total, item) => {
+        total += item.price
+        return total
+    }, 0)
+
+    return averageStartingPrice / initialFreelancers.length
+}
+
 // Function to render the initial state and to update the DOM
 function render() {
     // Render the initial state
     const freelancers = document.querySelector("#freelancer-table");
-    const dataRow = document.createElement("tr")
-    const dataRow1 = document.createElement("tr")
+    freelancers.innerHTML = "";
+    const headerRow = document.createElement("tr");
 
     // Render the column names first
     fieldNames.forEach((fieldName) => {
         const tableData = document.createElement("td");
         tableData.textContent = fieldName
-        dataRow.append(tableData)
+        headerRow.appendChild(tableData)
     });
+
+    freelancers.appendChild(headerRow)
 
     // Render rows of data
     for (let i = 0; i < initialFreelancers.length; i++) {
+
+        const tableRow = document.createElement("tr")
         const tableData1 = document.createElement("td");
         const tableData2 = document.createElement("td");
         const tableData3 = document.createElement("td");
         tableData1.textContent = initialFreelancers[i].name
         tableData2.textContent = initialFreelancers[i].occupation
         tableData3.textContent = initialFreelancers[i].price
-        dataRow1.append(tableData1)
-        dataRow1.append(tableData2)
-        dataRow1.append(tableData3)
+        tableRow.appendChild(tableData1)
+        tableRow.appendChild(tableData2)
+        tableRow.appendChild(tableData3)
+        freelancers.appendChild(tableRow)
     }
 
-    freelancers.append(dataRow)
-    freelancers.append(dataRow1)
+    const updateAveragePrice = document.querySelector(".average-price")
+    updateAveragePrice.innerHTML = `The average starting price is: ${averageStartingPrice().toFixed(2)}`
 }
 
 // Call the render function
